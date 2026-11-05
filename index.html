@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Mais clientes para a sua clínica de laser</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--ink:#2b1f26;--muted:#7a6a72;--rose:#b2476f;--rose-d:#8f3556;--soft:#fbeff4;--line:#ecdde4}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{font-family:Lato,system-ui,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+.wrap{min-height:100%;display:flex;flex-direction:column;max-width:560px;margin:0 auto;padding:20px 22px 28px}
+.bar{height:5px;background:var(--line);border-radius:9px;overflow:hidden;margin-bottom:26px}
+.bar i{display:block;height:100%;width:0;background:var(--rose);transition:width .35s}
+.screen{display:none;flex:1;flex-direction:column;animation:in .35s}
+.screen.on{display:flex}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+h1{font-size:30px;line-height:1.15;font-weight:900;letter-spacing:-.5px;margin:6px 0 22px}
+h2{font-size:25px;line-height:1.2;font-weight:900;margin-bottom:8px}
+.sub{color:var(--muted);font-size:15px;margin-bottom:20px;line-height:1.45}
+ul{list-style:none;padding:0;display:grid;gap:10px;margin-bottom:22px}
+li{background:var(--soft);border-radius:12px;padding:13px 15px;font-weight:700;font-size:16px}
+.foot{font-style:italic;color:var(--muted);font-size:14px;line-height:1.45;margin-bottom:22px}
+.btn{display:block;width:100%;border:0;border-radius:14px;background:var(--rose);color:#fff;font:900 17px Lato,sans-serif;padding:17px 18px;cursor:pointer;text-align:center;text-decoration:none;letter-spacing:.3px;transition:background .2s,transform .1s}
+.btn:hover{background:var(--rose-d)}.btn:active{transform:scale(.98)}
+input[type=text],input[type=tel]{width:100%;border:0;border-bottom:2px solid var(--line);font:700 22px Lato,sans-serif;padding:10px 2px;margin:10px 0 26px;outline:0;color:var(--ink);background:transparent}
+input:focus{border-color:var(--rose)}
+.opts{display:grid;gap:10px;margin:6px 0 22px}
+.opt{border:2px solid var(--line);border-radius:14px;background:#fff;padding:15px 16px;font:700 16px Lato,sans-serif;text-align:left;cursor:pointer;color:var(--ink);transition:.15s}
+.opt:hover,.opt.sel{border-color:var(--rose);background:var(--soft)}
+.note{font-size:13px;color:var(--muted);margin:-10px 0 18px;line-height:1.4}
+.err{color:#c0392b;font-size:13px;min-height:18px;margin:-18px 0 14px}
+#cal{min-height:560px;width:100%}
+.brand{text-align:center;font-size:11px;color:#b9aab1;margin-top:22px;letter-spacing:.5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="bar"><i id="pb"></i></div>
+
+  <section class="screen on" id="s0">
+    <h1>✨ Mais clientes fechando pacote na sua clínica de laser</h1>
+    <ul>
+      <li>🎯 Mais clientes no seu WhatsApp</li>
+      <li>📲 Anúncios no Instagram e Facebook</li>
+      <li>📊 Funil com formulário e agenda</li>
+      <li>🏆 Agência que já atende estética</li>
+    </ul>
+    <p class="foot">→ Exclusivo para clínicas com faturamento acima de R$30 mil/mês que queiram parar de depender de indicação.</p>
+    <button class="btn" onclick="go(1)">QUERO MAIS CLIENTES →</button>
+  </section>
+
+  <section class="screen" id="s1">
+    <h2>Qual é o seu nome?</h2>
+    <input id="nome" type="text" autocomplete="name" placeholder="Seu nome completo">
+    <div class="err" id="e1"></div>
+    <button class="btn" onclick="next(1)">Continuar →</button>
+  </section>
+
+  <section class="screen" id="s2">
+    <h2>Qual é o @ do Instagram da clínica?</h2>
+    <input id="insta" type="text" autocapitalize="none" autocorrect="off" placeholder="@suaclinica">
+    <div class="err" id="e2"></div>
+    <button class="btn" onclick="next(2)">Continuar →</button>
+  </section>
+
+  <section class="screen" id="s3">
+    <h2>Qual é o seu telefone (WhatsApp)?</h2>
+    <input id="tel" type="tel" inputmode="tel" autocomplete="tel" placeholder="(00) 00000-0000">
+    <div class="err" id="e3"></div>
+    <button class="btn" onclick="next(3)">Continuar →</button>
+  </section>
+
+  <section class="screen" id="s4">
+    <h2>Qual o faturamento mensal da clínica?</h2>
+    <div class="opts" id="fat">
+      <button class="opt" data-v="Acima de R$100 mil/mês">Acima de R$100 mil/mês</button>
+      <button class="opt" data-v="R$50 mil a R$100 mil/mês">R$50 mil a R$100 mil/mês</button>
+      <button class="opt" data-v="R$30 mil a R$50 mil/mês">R$30 mil a R$50 mil/mês</button>
+      <button class="opt" data-v="Até R$30 mil/mês">Até R$30 mil/mês</button>
+    </div>
+  </section>
+
+  <section class="screen" id="s5">
+    <h2>Para anunciar, o investimento mínimo é de R$50/dia (≈ R$1.500/mês).</h2>
+    <p class="note">Esse investimento não inclui o valor da nossa mão de obra.</p>
+    <p class="sub">Você está pronto(a) para investir nisso e levar a clínica para o próximo nível?</p>
+    <div class="opts" id="inv">
+      <button class="opt" data-v="Sim">Sim! Estou pronto para levar o meu negócio para o próximo nível 📈</button>
+      <button class="opt" data-v="Não">Infelizmente não é o meu momento</button>
+    </div>
+  </section>
+
+  <section class="screen" id="s6">
+    <h2>Perfeito! Escolha o melhor dia e horário 📅</h2>
+    <p class="sub">Reunião de 30 minutos para montar a estratégia da sua clínica.</p>
+    <div id="cal"></div>
+    <a class="btn" id="calfallback" style="display:none" target="_blank" rel="noopener">Agendar pelo WhatsApp</a>
+  </section>
+
+  <section class="screen" id="s7">
+    <h2>Sem problema! Vamos montar um plano do tamanho da sua clínica.</h2>
+    <p class="sub">Toque abaixo e fale direto com a gente no WhatsApp.</p>
+    <a class="btn" id="wa" target="_blank" rel="noopener">Pedir meu plano personalizado</a>
+  </section>
+
+  <div class="brand">Vetta · Sua marca em movimento.</div>
+</div>
+
+<script>
+const CFG = {
+  PIXEL_ID: "",
+  CAL_LINK: "",
+  WA: "5517991660659",
+  FORM: "https://docs.google.com/forms/d/e/1FAIpQLScAXoPY0scvwvkRUpEbDg1pigImSZy4LO9XNTMoylGBpylJYQ/formResponse",
+  E: {nome:"entry.189855756", tel:"entry.1449071951", insta:"entry.628529264", fat:"entry.63177949", origem:"entry.1380989411", inv:"entry.2060637992"}
+};
+if(CFG.PIXEL_ID){
+ !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+ fbq('init',CFG.PIXEL_ID);fbq('track','PageView');
+}
+const track=(ev,p)=>{try{window.fbq&&fbq('track',ev,p||{})}catch(e){}};
+const D={}; let cur=0; const total=7;
+const q=id=>document.getElementById(id);
+function go(n){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+  q('s'+n).classList.add('on'); cur=n;
+  q('pb').style.width=Math.min(100,Math.round(n/total*100))+'%';
+  const i=q('s'+n).querySelector('input'); if(i) setTimeout(()=>i.focus(),250);
+  window.scrollTo(0,0);
+}
+function next(n){
+  if(n===1){const v=q('nome').value.trim();if(v.length<2)return q('e1').textContent='Digite seu nome.';D.nome=v;q('e1').textContent=''}
+  if(n===2){let v=q('insta').value.trim();if(v.length<2)return q('e2').textContent='Digite o @ do Instagram.';if(!v.startsWith('@')&&!v.includes('instagram.com'))v='@'+v;D.insta=v;q('e2').textContent=''}
+  if(n===3){const v=q('tel').value.replace(/\D/g,'');if(v.length<10||v.length>13)return q('e3').textContent='Digite um telefone válido com DDD.';D.tel=q('tel').value.trim();q('e3').textContent='';track('Contact')}
+  go(n+1);
+}
+function pick(group,cb){
+  q(group).querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    q(group).querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');
+    setTimeout(()=>cb(b.dataset.v),180);
+  });
+}
+pick('fat',v=>{D.fat=v;go(5)});
+pick('inv',v=>{D.inv=v;finish()});
+function send(){
+  const p=new URLSearchParams(location.search);
+  const body=new URLSearchParams();
+  body.append(CFG.E.nome,D.nome||'');body.append(CFG.E.insta,D.insta||'');body.append(CFG.E.tel,D.tel||'');
+  body.append(CFG.E.fat,D.fat||'');body.append(CFG.E.inv,D.inv||'');
+  body.append(CFG.E.origem,(p.get('utm_source')||'direto')+(p.get('utm_campaign')?' / '+p.get('utm_campaign'):''));
+  return fetch(CFG.FORM,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body.toString()}).catch(()=>{});
+}
+function waLink(msg){return 'https://wa.me/'+CFG.WA+'?text='+encodeURIComponent(msg)}
+function finish(){
+  send();
+  const qualified = D.inv==='Sim' && D.fat!=='Até R$30 mil/mês';
+  if(qualified){
+    track('Lead',{content_name:'Clinica de laser',value:1,currency:'BRL'});
+    go(6); initCal();
+  }else{
+    track('Contact',{content_name:'Nao qualificado'});
+    q('wa').href=waLink('Olá! Sou '+D.nome+' ('+D.insta+'). Vi o anúncio da Vetta e quero um plano personalizado para a minha clínica.');
+    go(7);
+  }
+}
+function initCal(){
+  if(!CFG.CAL_LINK){
+    const a=q('calfallback');a.style.display='block';q('cal').style.display='none';
+    a.href=waLink('Olá! Sou '+D.nome+' ('+D.insta+'). Quero agendar a reunião de 30 minutos com a Vetta.');return;
+  }
+  (function(C,A,L){let p=function(a,ar){a.q.push(ar)};let d=C.document;C.Cal=C.Cal||function(){let cal=C.Cal;let ar=arguments;if(!cal.loaded){cal.ns={};cal.q=cal.q||[];d.head.appendChild(d.createElement("script")).src=A;cal.loaded=true}if(ar[0]===L){const api=function(){p(api,arguments)};const namespace=ar[1];api.q=api.q||[];if(typeof namespace==="string"){cal.ns[namespace]=cal.ns[namespace]||api;p(cal.ns[namespace],ar);p(cal,["initNamespace",namespace])}else p(cal,ar);return}p(cal,ar)}})(window,"https://app.cal.com/embed/embed.js","init");
+  Cal("init",{origin:"https://app.cal.com"});
+  Cal("inline",{elementOrSelector:"#cal",calLink:CFG.CAL_LINK,layout:"month_view",config:{name:D.nome,notes:'Instagram: '+D.insta+' | Tel: '+D.tel+' | Fat: '+D.fat}});
+  Cal("ui",{hideEventTypeDetails:true,layout:"month_view",styles:{branding:{brandColor:"#b2476f"}}});
+  Cal("on",{action:"bookingSuccessful",callback:()=>track('Schedule',{content_name:'Reuniao 30min'})});
+}
+</script>
+</body>
+</html>
