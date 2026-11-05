@@ -123,7 +123,7 @@ if(CFG.PIXEL_ID){
  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
  fbq('init',CFG.PIXEL_ID);fbq('track','PageView');
 }
-const track=(ev,p)=>{try{window.fbq&&fbq('track',ev,p||{})}catch(e){}};
+const track=(ev,p)=>{try{if(window.fbq){fbq('track',ev,p||{});if(ev==='Schedule')fbq('track','CompleteRegistration',p||{})}}catch(e){}};
 const D={}; let cur=0; const total=7;
 const q=id=>document.getElementById(id);
 function go(n){
