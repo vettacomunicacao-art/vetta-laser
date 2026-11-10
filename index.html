@@ -115,7 +115,11 @@ function initPixel(){
   !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
   fbq('init',CONFIG.pixelId); fbq('track','PageView');
 }
-function track(ev,p){ try{ if(window.fbq){ fbq('track',ev,p||{}); if(ev==='Schedule') fbq('track','CompleteRegistration',p||{}); } }catch(e){} }
+function track(ev,p){ try{ if(window.fbq) fbq('track',ev,p||{}); }catch(e){} }
+function trackC(ev,p){ try{ if(window.fbq) fbq('trackCustom',ev,p||{}); }catch(e){} }
+/* Lógica condicional (Funil Shark): so o lead ICP (aceita o investimento E fatura acima do corte) alimenta o evento que a campanha otimiza (Lead e CompleteRegistration). Quem aceita mas fatura menos continua indo para a agenda, mas gera evento proprio e nao treina a campanha. */
+var FAT_BAIXO="Até R$30 mil/mês";
+function isICP(){ return data.inv==="Sim" && data.fat!==FAT_BAIXO; }
 function send(){
   var q=new URLSearchParams(location.search), body=new URLSearchParams(), E=CONFIG.entry;
   body.append(E.nome,data.nome||""); body.append(E.insta,data.insta||""); body.append(E.tel,data.fone||"");
@@ -217,7 +221,7 @@ function vInv(s){
   optStep(s,5,"Recomendamos investir pelo menos R$50 por dia em anúncios","Em média R$1.500 por mês em anúncios. Esse valor se alinha ao seu orçamento atual?<br>(Esse investimento não inclui o valor da nossa mão de obra.)",INV,"inv",function(){
     var qualificado = data.inv==="Sim";
     send();
-    if(qualificado){ track("Lead",{content_name:"Clinica de laser",value:1,currency:"BRL"}); go("agenda"); }
+    if(qualificado){ if(isICP()) track("Lead",{content_name:"Clinica de laser",value:1,currency:"BRL"}); else trackC("LeadFaturamentoBaixo",{content_name:"Clinica de laser"}); go("agenda"); }
     else { track("Contact",{content_name:"Nao qualificado"}); go("no"); }
   });
 }
@@ -234,7 +238,7 @@ function vAgenda(s){
   }
   Cal("inline",{elementOrSelector:"#cal",calLink:CONFIG.calLink,layout:"month_view",config:{name:data.nome,notes:"Instagram: "+data.insta+" | Tel: "+data.fone+" | Faturamento: "+data.fat}});
   Cal("ui",{hideEventTypeDetails:true,layout:"month_view",styles:{branding:{brandColor:"#C87B31"}}});
-  Cal("on",{action:"bookingSuccessful",callback:function(){ track("Schedule",{content_name:"Reuniao 30min"}); }});
+  Cal("on",{action:"bookingSuccessful",callback:function(){ track("Schedule",{content_name:"Reuniao 30min"}); if(isICP()) track("CompleteRegistration",{content_name:"Reuniao 30min"}); else trackC("AgendouFaturamentoBaixo",{content_name:"Reuniao 30min"}); }});
 }
 function vNo(s){
   var url="https://wa.me/"+CONFIG.wa+"?text="+encodeURIComponent("Olá! Sou "+data.nome+(data.insta?" ("+data.insta+")":"")+". Vi o anúncio da Vetta e quero um plano personalizado para a minha clínica.");
