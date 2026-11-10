@@ -215,7 +215,7 @@ function optStep(s,n,title,sub,list,key,after){
 function vFat(s){ optStep(s,4,"Qual o faturamento da sua empresa?","",FAT,"fat",function(){ go("inv"); }); }
 function vInv(s){
   optStep(s,5,"Recomendamos investir pelo menos R$50 por dia em anúncios","Em média R$1.500 por mês em anúncios. Esse valor se alinha ao seu orçamento atual?<br>(Esse investimento não inclui o valor da nossa mão de obra.)",INV,"inv",function(){
-    var qualificado = data.inv==="Sim" && data.fat!=="Até R$30 mil/mês";
+    var qualificado = data.inv==="Sim";
     send();
     if(qualificado){ track("Lead",{content_name:"Clinica de laser",value:1,currency:"BRL"}); go("agenda"); }
     else { track("Contact",{content_name:"Nao qualificado"}); go("no"); }
